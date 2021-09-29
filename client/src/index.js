@@ -7,11 +7,17 @@ import { BrowserRouter } from 'react-router-dom'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
+import userReducer from './store/reducers/user'
 
 //Reducer
+const rootReducer = combineReducers({
+  user: userReducer
+})
+
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const app = (
-  <Provider>
+  <Provider store={store}>
     <BrowserRouter>
       <React.StrictMode>
         <App />
