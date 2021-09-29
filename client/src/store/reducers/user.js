@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes'
 import { updatedObject } from '../utility'
 
 const initialState = {
-    users: {
+    newUsers: {
         id: '',
         name: '',
         surname: '',
@@ -54,16 +54,17 @@ const initialState = {
             sortable: true,
             reorder: true
         },
-    ]
-
+    ],
+    userList: []
 }
 
 export const fetchUsers = (state, action) => {
-    updatedObject(state, { users: action.users })
+    return updatedObject(state, { userList: action.usersData })
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.FETCHUSERS: return fetchUsers(state, action)
         default: return state
     }
 }

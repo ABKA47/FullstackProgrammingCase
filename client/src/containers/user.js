@@ -14,8 +14,8 @@ class User extends Component {
         let userTable = (
             <div className="User">
                 <Card>
-                <Button>Add New User</Button>
-                    <DataTable
+                    <Button>Add New User</Button>
+                    <DataTable                        
                         title="Users"
                         columns={this.props.tableColumns}
                         data={this.props.users}
@@ -23,7 +23,7 @@ class User extends Component {
                         sortIcon={<SortIcon />}
                         pagination
                         selectableRows
-                    />                   
+                    />
                 </Card>
             </div>
         )
@@ -36,10 +36,11 @@ class User extends Component {
 }
 const mapStateToProps = (state) => ({
     tableColumns: state.user.columns,
-    users: state.user.users
+    users: state.user.userList
 })
 const mapDispatchToProps = dispatch => ({
-    onFetchAllUsers: () => dispatch(actions.fetchAllUsers())
+    onFetchAllUsers: () => dispatch(actions.fetchAllUsers()),
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

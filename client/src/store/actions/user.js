@@ -4,14 +4,14 @@ import axios from '../../axios'
 export const fetchUsers = (users) => {
     return {
         type: actionTypes.FETCHUSERS,
-        users: users
+        usersData: users
     }
 }
 
 export const fetchAllUsers = () => {
     return dispatch => {
-        axios.get('users').then(response => {
-            console.log(response.data)
+        axios.get('users').then(response => {       
+            console.log(response.data)   
             dispatch(fetchUsers(response.data))
         })
     }

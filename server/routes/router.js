@@ -1,17 +1,17 @@
 const express = require('express')
 
-const route = express.Router()
+const router = express.Router()
 
 const { User } = require("../model/user")
 
-route.get('/users', (req, res) => {
-    User.find().exec().then(user => {
+router.get('/users', (req, res) => {
+    User.find().then(user => {
         res.send(user)
     }).catch(err => {
         res.status(500).send({ message: err.message || "Error Occurred while retriving user information!" })
     })
 })
-route.get('/users/:id', (req, res) => {
+router.get('/users/:id', (req, res) => {
     const id = req.params.id
     User.findById(id).then(data => {
         if (!data) {
@@ -24,7 +24,7 @@ route.get('/users/:id', (req, res) => {
     })
 })
 
-route.post('/add-user', (req, res) => {
+router.post('/add-user', (req, res) => {
     let user = new User({
         name: req.body.name,
         surname: req.body.surname,
@@ -40,7 +40,7 @@ route.post('/add-user', (req, res) => {
     })
 })
 
-route.put('/update-user/:id', (req, res) => {
+router.put('/update-user/:id', (req, res) => {
     const id = req.params.id
 
     User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
@@ -55,7 +55,7 @@ route.put('/update-user/:id', (req, res) => {
         })
 })
 
-route.delete('/delete-user/:id', (req, res) => {
+router.delete('/delete-user/:id', (req, res) => {
     const id = req.params.id
     User.findByIdAndDelete(id)
         .then(data => {
@@ -71,4 +71,4 @@ route.delete('/delete-user/:id', (req, res) => {
         })
 })
 
-module.exports = route
+module.exports = router
