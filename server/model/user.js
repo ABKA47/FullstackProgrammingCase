@@ -3,31 +3,31 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
-    id:{
-        type:Number,
-        unique:1
+    id: {
+        type: Number,
+        unique: 1
     },
-    name:{
-        type:String,        
+    name: {
+        type: String,
     },
-    surname:{
-        type:String, 
+    surname: {
+        type: String,
     },
-    username:{
-        type:String, 
+    username: {
+        type: String,
     },
-    email:{
-        type:String, 
+    title: {
+        type: String,
     },
-    title:{
-        type:String, 
+    email: {
+        type: String,
     },
-    role:{
-        type:String, 
+    role: {
+        type: String,
     }
 
 })
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('Users', userSchema);
 
-module.exports = User
+module.exports = { User }

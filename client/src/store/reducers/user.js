@@ -58,9 +58,12 @@ const initialState = {
 
 }
 
+export const fetchUsers = (state, action) => {
+    updatedObject(state, { users: action.users })
+}
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {     
+    switch (action.type) {
         default: return state
     }
 }

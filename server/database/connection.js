@@ -2,8 +2,11 @@ const mongoose = require('mongoose')
 const config = require("../config/config")
 
 const connectDB = () => {
-  
-        const con = mongoose.connect(config.mongoURI).then(()=>console.log(`MongoDB connected`)).catch(err => console.log(err))
-    }
+
+    const con = mongoose.connect(config.mongoURI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then(() => console.log(`MongoDB connected`)).catch(err => console.log(err))
+}
 
 module.exports = connectDB

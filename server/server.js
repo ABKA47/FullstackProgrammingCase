@@ -1,18 +1,17 @@
 const express = require('express')
-const bodyParser = require('body-parser')
+const cors = require('cors')
 const connectDB = require('./database/connection')
-const server = express()
+const app = express()
 
 connectDB()
-const PORT = process.env.PORT || 4000
 
-server.use(bodyParser.urlencoded({extended:true}))
-server.use(express.json())
+app.use(express.json())
+app.use(cors())
 
-server.use('/users', require('./routes/router'))
-server.use('/users/:id', require('./routes/router'))
-server.use('/add-user', require('./routes/router'))
-server.use('/update-user/:id',require('./routes/router'))
-server.use('/delete-user/:id', require('./routes/router'))
+app.use('/users', require('./routes/router'))
+app.use('/users/:id', require('./routes/router'))
+app.use('/add-user', require('./routes/router'))
+app.use('/update-user/:id', require('./routes/router'))
+app.use('/delete-user/:id', require('./routes/router'))
 
-server.listen(PORT,console.log(`Server started on port ${PORT}`))
+app.listen(4000, console.log("Server started on port 4000"))
