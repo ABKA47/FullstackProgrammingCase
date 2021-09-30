@@ -37,10 +37,10 @@ export const updateUser = (updateUserObject) => {
     }
 }
 
-export const openSpecificUserModal = () => {
+export const openSpecificUserModal = (userData) => {
     return {
         type: actionTypes.OPENSPECIFICUSERMODAL,
-
+        userData: userData
     }
 }
 export const closeUserModal = () => {
@@ -77,5 +77,17 @@ export const sendNewUser = (userObject) => {
 export const sendUpdateUser = (userId, userUpdatedObject) => {
     return dispatch => {
         axios.put(`update-user/${userId}`, userUpdatedObject)
+    }
+}
+export const deleteUser = (userId) => {
+    return dispatch => {
+        axios.delete(`delete-user/${userId}`)
+    }
+}
+export const getSpecificUser = (userId) => {
+    return dispatch => {
+        axios.get(`users/${userId}`).then(response => {
+            dispatch(openSpecificUserModal(response.data))
+        })
     }
 }

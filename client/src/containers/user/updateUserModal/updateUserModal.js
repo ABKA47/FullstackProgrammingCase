@@ -40,6 +40,7 @@ class UpdateUserModal extends Component {
         let sendObject = updateUserData
         this.props.onSendUpdateUser(this.props.idFromUser, sendObject)
         console.log(sendObject)
+        window.location.reload()
     }
 
     render() {

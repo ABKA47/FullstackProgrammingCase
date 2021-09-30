@@ -2,7 +2,7 @@ export {
     fetchAllUsers,
     openAddUserModal,
     openDeleteUserModal,
-    openSpecificUserModal,
+    getSpecificUser,
     openUpdateUserModal,
     editUserModal,
     closeUserModal,
@@ -10,5 +10,6 @@ export {
     sendNewUser,
     getIdFromUser,
     updateUser,
-    sendUpdateUser
+    sendUpdateUser,
+    deleteUser
 } from './user'

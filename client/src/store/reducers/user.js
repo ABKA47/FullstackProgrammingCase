@@ -89,7 +89,8 @@ export const openAddUserModal = (state, action) => {
     return updatedObject(state, { addUserEditable: true })
 }
 export const idFromUser = (state, action) => {
-    return updatedObject(state, { idFromUser: action.id })
+    let selectedUser = state.userList.filter(user => user._id === action.id)
+    return updatedObject(state, { user: selectedUser, idFromUser: action.id })
 }
 export const openDeleteUserModal = (state, action) => {
     return updatedObject(state, { deleteUserEditable: true })
@@ -111,7 +112,7 @@ export const updateUser = (state, action) => {
     return updatedObject(state, { userUpdate: action.updateUserObject })
 }
 export const openSpecificUserModal = (state, action) => {
-    return updatedObject(state, { specificUserEditable: true })
+    return updatedObject(state, { user: action.userData, specificUserEditable: true })
 }
 export const closeUserModal = (state, action) => {
     return updatedObject(state, { addUserEditable: false, updateUserEditable: false, deleteUserEditable: false, specificUserEditable: false })

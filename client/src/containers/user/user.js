@@ -4,6 +4,10 @@ import Card from "@material-ui/core/Card";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import Button from "@material-ui/core/Button/Button"
 import TextBox from '@material-ui/core/TextField/TextField'
+import XLSX from 'xlsx'
+import PrintIcon from '@material-ui/icons/Print'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/index'
 import Modal from '../../components/UI/Modal/Modal'
@@ -12,31 +16,55 @@ import UpdateUserModal from './updateUserModal/updateUserModal';
 import DeleteUserModal from './deleteUserModal/deleteUserModal'
 import SpecificUserModal from './specificUserModal/specificUserModal'
 
+
 class User extends Component {
     componentDidMount() {
         this.props.onFetchAllUsers()
     }
     render() {
+        const downloadExcel = () => {
+            const newData = this.props.users.map(row => {
+                delete row.tableData
+                return row
+            })
+            const workSheet = XLSX.utils.json_to_sheet(newData)
+            const workBook = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(workBook, workSheet, "Users")
+            //Buffer
+            XLSX.write(workBook, { bookType: "xlsx", type: "buffer" })
+            //Binary string
+            XLSX.write(workBook, { bookType: "xlsx", type: "binary" })
+            //Download
+            XLSX.writeFile(workBook, "Users.xlsx")
+
+
+        }
+        const downloadPdf = () => {
+            const doc = new jsPDF()
+            doc.text("User Details", 20, 10)
+            doc.autoTable({
+                theme: "grid",
+                columns: this.props.tableColumns.map(col => ({ ...col, dataKey: col.selector })),
+                body: this.props.users
+            })
+            doc.save('Users.pdf')
+        }
         let userTable = (
             <div className="User">
                 <Card>
                     <Card>
-                        <Button onClick={() => this.props.onOpenUserModal()}>Add New User</Button>
+                        <Button onClick={() => this.props.onOpenAddUserModal()}>Add New User</Button>
                         <Card>
                             <TextBox
                                 placeholder="Write User ID"
                                 value={this.props.idFromUser}
                                 onChange={(event) => this.props.onGetIdFromUser(event.target.value)}
                             />
-                            <Button onClick={() => this.props.onSpecificUserModal()}>Specific User</Button>
+                            <Button onClick={(idFromUser) => this.props.onGetSpecificUser(this.props.idFromUser)}>Specific User</Button>
                             <Button onClick={() => this.props.onOpenUpdateUserModal()}>Update User</Button>
-                            <Button onClick={() => this.props.onDeleteUserModal()}>Delete User</Button>
+                            <Button onClick={() => this.props.onOpenDeleteUserModal()}>Delete User</Button>
                         </Card>
-
-
-
                     </Card>
-
                     <DataTable
                         title="Users"
                         columns={this.props.tableColumns}
@@ -45,9 +73,9 @@ class User extends Component {
                         sortIcon={<SortIcon />}
                         pagination
                     />
-
+                    <Button onClick={() => downloadPdf()}>Export PDF</Button>
+                    <Button onClick={() => downloadExcel()}>Export XLS</Button>
                 </Card>
-
             </div>
         )
         return (
@@ -65,15 +93,13 @@ class User extends Component {
                 <Modal show={this.props.specificUserEditable} close={this.props.onCloseModal}>
                     <SpecificUserModal />
                 </Modal>
-
-
             </div>
         )
     }
 }
 const mapStateToProps = (state) => ({
     tableColumns: state.user.columns,
-    users: state.user.userList,   
+    users: state.user.userList,
     addUserEditable: state.user.addUserEditable,
     updateUserEditable: state.user.updateUserEditable,
     deleteUserEditable: state.user.deleteUserEditable,
@@ -83,10 +109,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
     onFetchAllUsers: () => dispatch(actions.fetchAllUsers()),
     onEditUserModal: (id) => dispatch(actions.editUserModal(id)),
-    onOpenUserModal: () => dispatch(actions.openAddUserModal()),
+    onOpenAddUserModal: () => dispatch(actions.openAddUserModal()),
     onOpenDeleteUserModal: () => dispatch(actions.openDeleteUserModal()),
     onOpenUpdateUserModal: () => dispatch(actions.openUpdateUserModal()),
-    onOpenSpecificUserModal: () => dispatch(actions.openSpecificUserModal()),
+    onGetSpecificUser: (id) => dispatch(actions.getSpecificUser(id)),
     onCloseModal: () => dispatch(actions.closeUserModal()),
     onGetIdFromUser: (id) => dispatch(actions.getIdFromUser(id))
 })

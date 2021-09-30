@@ -39,6 +39,7 @@ class AddUserModal extends Component {
         let sendObject = newUserData
         this.props.onSendNewUser(sendObject)
         console.log(sendObject)
+        window.location.reload()
     }
 
     render() {
