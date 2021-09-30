@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import User from './containers/user'
+import User from './containers/user/user'
 
 function App() {
   return (

@@ -2,11 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const userSchema = new Schema({
-    id: {
-        type: Number,
-        unique: 1
-    },
+const userSchema = new Schema({  
     name: {
         type: String,
     },

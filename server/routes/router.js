@@ -34,10 +34,17 @@ router.post('/add-user', (req, res) => {
         role: req.body.role
     })
 
-    user.save((err, userInfo) => {
-        if (err) return res.json({ success: false, err })
-        return res.status(200).json({ success: true, userInfo })
+    user.save(user).then(data => {
+        res.status(200).send({
+            message: data.message
+        })
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
+        })
     })
+
+
 })
 
 router.put('/update-user/:id', (req, res) => {
