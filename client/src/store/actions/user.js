@@ -14,9 +14,33 @@ export const editUserModal = (userId) => {
         userId: userId
     }
 }
-export const openUserModal = () => {
+export const openAddUserModal = () => {
     return {
-        type: actionTypes.OPENUSERMODAL
+        type: actionTypes.OPENADDUSERMODAL
+    }
+}
+export const openDeleteUserModal = () => {
+    return {
+        type: actionTypes.OPENDELETEUSERMODAL,
+    }
+}
+export const openUpdateUserModal = () => {
+    return {
+        type: actionTypes.OPENUPDATEUSERMODAL,
+
+    }
+}
+export const updateUser = (updateUserObject) => {
+    return {
+        type: actionTypes.UPDATEUSER,
+        updateUserObject: updateUserObject
+    }
+}
+
+export const openSpecificUserModal = () => {
+    return {
+        type: actionTypes.OPENSPECIFICUSERMODAL,
+
     }
 }
 export const closeUserModal = () => {
@@ -31,10 +55,16 @@ export const addNewUser = (newUserObject) => {
         newUserObject: newUserObject
     }
 }
+export const getIdFromUser = (id) => {
+    return {
+        type: actionTypes.GETIDFROMUSER,
+        id: id
+    }
+}
 
 export const fetchAllUsers = () => {
     return dispatch => {
-        axios.get('users').then(response => {         
+        axios.get('users').then(response => {
             dispatch(fetchUsers(response.data))
         })
     }
@@ -42,5 +72,10 @@ export const fetchAllUsers = () => {
 export const sendNewUser = (userObject) => {
     return dispatch => {
         axios.post("add-user", userObject)
+    }
+}
+export const sendUpdateUser = (userId, userUpdatedObject) => {
+    return dispatch => {
+        axios.put(`update-user/${userId}`, userUpdatedObject)
     }
 }

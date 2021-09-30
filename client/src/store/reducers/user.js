@@ -10,7 +10,22 @@ const initialState = {
         email: { value: '', placeHolder: 'Email' },
         role: { value: '', placeHolder: 'Role' }
     },
+    userUpdate: {
+        name: { value: '', placeHolder: 'Name' },
+        surname: { value: '', placeHolder: 'SurName' },
+        username: { value: '', placeHolder: 'User Name' },
+        title: { value: '', placeHolder: 'Title' },
+        email: { value: '', placeHolder: 'Email' },
+        role: { value: '', placeHolder: 'Role' }
+    },
     columns: [
+        {
+            id: 0,
+            name: "ID",
+            selector: "_id",
+            sortable: true,
+            reorder: true
+        },
         {
             id: 1,
             name: "Name",
@@ -56,7 +71,11 @@ const initialState = {
     ],
     userList: [],
     user: [],
-    editAble: false
+    addUserEditable: false,
+    updateUserEditable: false,
+    deleteUserEditable: false,
+    specificUserEditable: false,
+    idFromUser: ''
 }
 
 export const fetchUsers = (state, action) => {
@@ -64,23 +83,51 @@ export const fetchUsers = (state, action) => {
 }
 export const editUserModal = (state, action) => {
     let user = state.userList.filter(user => user._id === action.userId)
-    return updatedObject(state, { user: user, editAble: true })
+    return updatedObject(state, { user: user, addUserEditable: true })
 }
-export const openUserModal = (state, action) => {
-    return updatedObject(state, { editAble: true })
+export const openAddUserModal = (state, action) => {
+    return updatedObject(state, { addUserEditable: true })
+}
+export const idFromUser = (state, action) => {
+    return updatedObject(state, { idFromUser: action.id })
+}
+export const openDeleteUserModal = (state, action) => {
+    return updatedObject(state, { deleteUserEditable: true })
+}
+export const openUpdateUserModal = (state, action) => {
+    let selectedUser = state.userList.filter(user => user._id === state.idFromUser)
+    selectedUser.map(user => {
+        state.userUpdate.name.value = user.name
+        state.userUpdate.surname.value = user.surname
+        state.userUpdate.username.value = user.username
+        state.userUpdate.title.value = user.title
+        state.userUpdate.email.value = user.email
+        state.userUpdate.role.value = user.role
+    })
+
+    return updatedObject(state, { user: selectedUser, updateUserEditable: true })
+}
+export const updateUser = (state, action) => {
+    return updatedObject(state, { userUpdate: action.updateUserObject })
+}
+export const openSpecificUserModal = (state, action) => {
+    return updatedObject(state, { specificUserEditable: true })
 }
 export const closeUserModal = (state, action) => {
-    return updatedObject(state, { editAble: false })
+    return updatedObject(state, { addUserEditable: false, updateUserEditable: false, deleteUserEditable: false, specificUserEditable: false })
 }
 export const addNewUser = (state, action) => {
     return updatedObject(state, { newUser: action.newUserObject })
 }
-
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.FETCHUSERS: return fetchUsers(state, action)
-        case actionTypes.OPENUSERMODAL: return openUserModal(state, action)
+        case actionTypes.OPENADDUSERMODAL: return openAddUserModal(state, action)
+        case actionTypes.GETIDFROMUSER: return idFromUser(state, action)
+        case actionTypes.UPDATEUSER: return updateUser(state, action)
+        case actionTypes.OPENDELETEUSERMODAL: return openDeleteUserModal(state, action)
+        case actionTypes.OPENUPDATEUSERMODAL: return openUpdateUserModal(state, action)
+        case actionTypes.OPENSPECIFICUSERMODAL: return openSpecificUserModal(state, action)
         case actionTypes.EDITUSERMODAL: return editUserModal(state, action)
         case actionTypes.CLOSEUSERMODAL: return closeUserModal(state, action)
         case actionTypes.ADDUSER: return addNewUser(state, action)

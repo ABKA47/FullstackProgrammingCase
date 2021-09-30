@@ -1,1 +1,14 @@
-export { fetchAllUsers, openUserModal, editUserModal, closeUserModal, addNewUser, sendNewUser } from './user'
+export {
+    fetchAllUsers,
+    openAddUserModal,
+    openDeleteUserModal,
+    openSpecificUserModal,
+    openUpdateUserModal,
+    editUserModal,
+    closeUserModal,
+    addNewUser,
+    sendNewUser,
+    getIdFromUser,
+    updateUser,
+    sendUpdateUser
+} from './user'
