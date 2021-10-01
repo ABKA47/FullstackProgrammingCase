@@ -67,6 +67,18 @@ export const changeSearchFilter = (searchItem) => {
         searchItem: searchItem
     }
 }
+export const updateUserResponse = (response) => {
+    return {
+        type: actionTypes.UPDATEUSERRESPONSE,
+        response: response
+    }
+}
+export const deleteUserResponse = (response) => {
+    return {
+        type: actionTypes.DELETEUSERRESPONSE,
+        response: response
+    }
+}
 
 export const fetchAllUsers = () => {
     return dispatch => {
@@ -82,12 +94,17 @@ export const sendNewUser = (userObject) => {
 }
 export const sendUpdateUser = (userId, userUpdatedObject) => {
     return dispatch => {
-        axios.put(`update-user/${userId}`, userUpdatedObject)
+        axios.put(`update-user/${userId}`, userUpdatedObject).then(response => {
+            console.log(response.statusText)
+            dispatch(updateUserResponse(response.statusText))
+        })
     }
 }
 export const deleteUser = (userId) => {
     return dispatch => {
-        axios.delete(`delete-user/${userId}`)
+        axios.delete(`delete-user/${userId}`).then(response => {
+            dispatch(deleteUserResponse(response.data))
+        })
     }
 }
 export const getSpecificUser = (userId) => {

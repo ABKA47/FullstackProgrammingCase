@@ -6,6 +6,7 @@ import Label from '@material-ui/core/FormLabel/FormLabel'
 import Button from '@material-ui/core/Button/Button';
 import TextBox from '@material-ui/core/TextField/TextField'
 import * as actions from '../../../store/actions/index'
+import Notification from '../../../components/UI/Notification/notification';
 
 const style = {
     position: 'absolute',
@@ -39,8 +40,15 @@ class UpdateUserModal extends Component {
 
         let sendObject = updateUserData
         this.props.onSendUpdateUser(this.props.idFromUser, sendObject)
-        console.log(sendObject)
-       // window.location.reload()
+        console.log("response", this.props.response)
+        if (this.props.response === 'OK') {
+            this.props.onSetNotification(true)
+                (<Notification message="User updated successfully" severity='success' />)
+            // window.location.reload()
+        } else {
+            this.props.onSetNotification(false)
+            return (<Notification message="User cannot updated" severity='error' />)
+        }
     }
 
     render() {
@@ -57,17 +65,17 @@ class UpdateUserModal extends Component {
                     <Label aria-atomic>Update User</Label>
                     {userArray.map(user => (
                         <div>
-                            {console.log("user", user)}
-                            <Card key={user.id}>
-                                <TextBox
-                                    style={{ width: "100%" }}
-                                    value={user.config.value}
-                                    onChange={(event) => this.inputChanceHandler(event, user.id)}
-                                />
-                            </Card>
+                            <TextBox
+                                key={user.id}
+                                color="primary"
+                                variant="outlined"
+                                style={{ width: "100%", marginBottom: '10px' }}
+                                value={user.config.value}
+                                onChange={(event) => this.inputChanceHandler(event, user.id)}
+                            />
                         </div>
                     ))}
-                    <Button onClick={(event) => this.formSubmit(event)}>Update User</Button>
+                    <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={(event) => this.formSubmit(event)}>Update User</Button>
                 </Box>
             </div>
         )
@@ -75,12 +83,15 @@ class UpdateUserModal extends Component {
 }
 const mapStateToProps = (state) => ({
     userUpdate: state.user.userUpdate,
-    idFromUser: state.user.idFromUser
+    idFromUser: state.user.idFromUser,
+    success: state.notification.success,
+    response: state.user.response
 })
 const mapDispatchToProps = dispatch => ({
     onAddNewUser: (newUserObject) => dispatch(actions.addNewUser(newUserObject)),
     onSendUpdateUser: (newUserObject) => dispatch(actions.sendUpdateUser(newUserObject)),
-    onUpdateUser: (updateUserObject) => dispatch(actions.updateUser(updateUserObject))
+    onUpdateUser: (updateUserObject) => dispatch(actions.updateUser(updateUserObject)),
+    onSetNotification: (info) => dispatch(actions.setNotification(info))
 })
 
 

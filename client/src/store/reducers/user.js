@@ -77,7 +77,8 @@ const initialState = {
     updateUserEditable: false,
     deleteUserEditable: false,
     specificUserEditable: false,
-    idFromUser: ''
+    idFromUser: '',
+    response: ''
 }
 
 export const fetchUsers = (state, action) => {
@@ -137,6 +138,13 @@ export const closeUserModal = (state, action) => {
 export const addNewUser = (state, action) => {
     return updatedObject(state, { newUser: action.newUserObject })
 }
+export const updateUserResponse = (state, action) => {
+    return updatedObject(state, { response: action.response })
+}
+export const deleteUserResponse = (state, action) => {
+    return updatedObject(state, { response: action.response })
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.FETCHUSERS: return fetchUsers(state, action)
@@ -150,6 +158,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.CLOSEUSERMODAL: return closeUserModal(state, action)
         case actionTypes.ADDUSER: return addNewUser(state, action)
         case actionTypes.SEARCHEDUSERLIST: return changeSearchFilter(state, action)
+        case actionTypes.UPDATEUSERRESPONSE: return updateUserResponse(state,action)
+        case actionTypes.DELETEUSERRESPONSE: return deleteUserResponse(state,action)
+
         default: return state
     }
 }

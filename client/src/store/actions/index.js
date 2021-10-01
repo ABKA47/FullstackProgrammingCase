@@ -14,3 +14,5 @@ export {
     deleteUser,
     changeSearchFilter
 } from './user'
+
+export { setNotification } from './notification'

@@ -9,10 +9,12 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import promiseMiddleware from 'redux-promise';
 import userReducer from './store/reducers/user'
+import notificationReducer from './store/reducers/notification'
 
 //Reducer
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  notification: notificationReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(promiseMiddleware, thunk))

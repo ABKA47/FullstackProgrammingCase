@@ -15,6 +15,11 @@ import AddUserModal from './addUserModal/AddUserModal';
 import UpdateUserModal from './updateUserModal/updateUserModal';
 import DeleteUserModal from './deleteUserModal/deleteUserModal'
 import SpecificUserModal from './specificUserModal/specificUserModal'
+import { createTheme, ThemeProvider } from '@material-ui/core/styles'
+import { lightGreen, blue, purple, pink } from "@material-ui/core/colors";
+
+// CSS
+import "./user.css"
 
 
 class User extends Component {
@@ -49,22 +54,37 @@ class User extends Component {
             })
             doc.save('Users.pdf')
         }
+
+        const defaultTheme = createTheme({
+            palette: {
+              secondary: pink
+            }
+          });
+
+        const customTheme = createTheme({
+            palette: {
+              secondary: pink
+            }
+          });
+
         let userTable = (
             <div className="User">
                 <Card>
                     <Card>
-                        <Button onClick={() => this.props.onOpenAddUserModal()}>Add New User</Button>
-                        <Card>
-                            <TextBox
-                                placeholder="Write User ID"
-                                value={this.props.idFromUser}
-                                onChange={(event) => this.props.onGetIdFromUser(event.target.value)}
-                            />
-                            <Button onClick={() => this.props.onGetSpecificUser(this.props.idFromUser)}>Specific User</Button>
-                            <Button onClick={() => this.props.onOpenUpdateUserModal()}>Update User</Button>
-                            <Button onClick={() => this.props.onOpenDeleteUserModal()}>Delete User</Button>
-                        </Card>
+                        <TextBox
+                            placeholder="Write User ID"
+                            value={this.props.idFromUser}
+                            style={{ margin: '10px' }}
+                            onChange={(event) => this.props.onGetIdFromUser(event.target.value)}
+                        />
+                        <ThemeProvider theme={defaultTheme}>
+                        <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onGetSpecificUser(this.props.idFromUser)}>Specific User</Button>
+                        <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onOpenUpdateUserModal()}>Update User</Button>
+                        <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onOpenDeleteUserModal()}>Delete User</Button>
+                        <Button style={{ margin: '10px', marginLeft: '50px' }} color="primary" variant="contained" onClick={() => this.props.onOpenAddUserModal()}>Add New User</Button>
+                        </ThemeProvider>
                     </Card>
+
                     <DataTable
                         title="Users"
                         columns={this.props.tableColumns}
@@ -72,8 +92,9 @@ class User extends Component {
                         defaultSortFieldId={1}
                         sortIcon={<SortIcon />}
                         pagination
-                        actions={[<TextBox placeholder="Search" onChange={(event) => this.props.onSearchedItemList(event.target.value)} />, <Button onClick={() => downloadPdf()}>Export PDF</Button>,
-                        <Button onClick={() => downloadExcel()}>Export XLS</Button>]}
+                        actions={[<TextBox placeholder="Search" onChange={(event) => this.props.onSearchedItemList(event.target.value)} />,
+                        <ThemeProvider theme={defaultTheme}><Button color="secondary" variant="contained" onClick={() => downloadPdf()}>Export PDF</Button></ThemeProvider>,
+                        <ThemeProvider theme={customTheme}><Button color="secondary" variant="contained" onClick={() => downloadExcel()}>Export XLS</Button></ThemeProvider>  ]}
                     />
 
                 </Card>

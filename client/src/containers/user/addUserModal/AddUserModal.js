@@ -54,18 +54,18 @@ class AddUserModal extends Component {
         return (
             <div>
                 <Box sx={style} >
-                    <Label aria-atomic>New User</Label>
                     {userArray.map(user => (
-                        <Card key={user.id}>
                             <TextBox
-                                style={{ width: "100%" }}
+                                key={user.id}
+                                color="primary"
+                                variant="outlined"
+                                style={{ width: "100%", marginBottom: '10px' }}
                                 placeholder={user.config.placeHolder}
                                 value={user.config.value}
                                 onChange={(event) => this.inputChanceHandler(event, user.id)}
                             />
-                        </Card>
                     ))}
-                    <Button onClick={(event) => this.formSubmit(event)}>Add User</Button>
+                    <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={(event) => this.formSubmit(event)}>Add User</Button>
                 </Box>
             </div>
         )
