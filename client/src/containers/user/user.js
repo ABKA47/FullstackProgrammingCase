@@ -60,7 +60,7 @@ class User extends Component {
                                 value={this.props.idFromUser}
                                 onChange={(event) => this.props.onGetIdFromUser(event.target.value)}
                             />
-                            <Button onClick={(idFromUser) => this.props.onGetSpecificUser(this.props.idFromUser)}>Specific User</Button>
+                            <Button onClick={() => this.props.onGetSpecificUser(this.props.idFromUser)}>Specific User</Button>
                             <Button onClick={() => this.props.onOpenUpdateUserModal()}>Update User</Button>
                             <Button onClick={() => this.props.onOpenDeleteUserModal()}>Delete User</Button>
                         </Card>
@@ -68,13 +68,14 @@ class User extends Component {
                     <DataTable
                         title="Users"
                         columns={this.props.tableColumns}
-                        data={this.props.users}
+                        data={this.props.searchList}
                         defaultSortFieldId={1}
                         sortIcon={<SortIcon />}
                         pagination
+                        actions={[<TextBox placeholder="Search" onChange={(event) => this.props.onSearchedItemList(event.target.value)} />, <Button onClick={() => downloadPdf()}>Export PDF</Button>,
+                        <Button onClick={() => downloadExcel()}>Export XLS</Button>]}
                     />
-                    <Button onClick={() => downloadPdf()}>Export PDF</Button>
-                    <Button onClick={() => downloadExcel()}>Export XLS</Button>
+
                 </Card>
             </div>
         )
@@ -104,7 +105,8 @@ const mapStateToProps = (state) => ({
     updateUserEditable: state.user.updateUserEditable,
     deleteUserEditable: state.user.deleteUserEditable,
     specificUserEditable: state.user.specificUserEditable,
-    idFromUser: state.user.idFromUser
+    idFromUser: state.user.idFromUser,
+    searchList: state.user.searchedUserList
 })
 const mapDispatchToProps = dispatch => ({
     onFetchAllUsers: () => dispatch(actions.fetchAllUsers()),
@@ -114,7 +116,8 @@ const mapDispatchToProps = dispatch => ({
     onOpenUpdateUserModal: () => dispatch(actions.openUpdateUserModal()),
     onGetSpecificUser: (id) => dispatch(actions.getSpecificUser(id)),
     onCloseModal: () => dispatch(actions.closeUserModal()),
-    onGetIdFromUser: (id) => dispatch(actions.getIdFromUser(id))
+    onGetIdFromUser: (id) => dispatch(actions.getIdFromUser(id)),
+    onSearchedItemList: (searchItem) => dispatch(actions.changeSearchFilter(searchItem))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

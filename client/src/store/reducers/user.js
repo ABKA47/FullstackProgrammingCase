@@ -8,7 +8,7 @@ const initialState = {
         username: { value: '', placeHolder: 'User Name' },
         title: { value: '', placeHolder: 'Title' },
         email: { value: '', placeHolder: 'Email' },
-        role: { value: '', placeHolder: 'Role' }
+        role: { value: [{ value: 'Admin', displayValue: 'ADMIN' }, { value: 'User', displayValue: 'USER' }], placeHolder: 'Role' }
     },
     userUpdate: {
         name: { value: '', placeHolder: 'Name' },
@@ -16,7 +16,7 @@ const initialState = {
         username: { value: '', placeHolder: 'User Name' },
         title: { value: '', placeHolder: 'Title' },
         email: { value: '', placeHolder: 'Email' },
-        role: { value: '', placeHolder: 'Role' }
+        role: { value: [{ value: 'Admin', displayValue: 'ADMIN' }, { value: 'User', displayValue: 'USER' }], placeHolder: 'Role' }
     },
     columns: [
         {
@@ -66,11 +66,13 @@ const initialState = {
             name: "Role",
             selector: "role",
             sortable: true,
-            reorder: true
+            reorder: true,
+            selectable: true
         },
     ],
     userList: [],
     user: [],
+    searchedUserList: [],
     addUserEditable: false,
     updateUserEditable: false,
     deleteUserEditable: false,
@@ -79,11 +81,26 @@ const initialState = {
 }
 
 export const fetchUsers = (state, action) => {
-    return updatedObject(state, { userList: action.usersData })
+    return updatedObject(state, { userList: action.usersData, searchedUserList: action.usersData })
 }
 export const editUserModal = (state, action) => {
     let user = state.userList.filter(user => user._id === action.userId)
     return updatedObject(state, { user: user, addUserEditable: true })
+}
+export const changeSearchFilter = (state, action) => {
+    let serchedValue = state.userList.filter(value => {
+        if (
+            value.name.toLowerCase().includes(action.searchItem.toLowerCase()) ||
+            value.surname.toLowerCase().includes(action.searchItem.toLowerCase()) ||
+            value.username.toLowerCase().includes(action.searchItem.toLowerCase()) ||
+            value.title.toLowerCase().includes(action.searchItem.toLowerCase()) ||
+            value.email.toLowerCase().includes(action.searchItem.toLowerCase()) ||
+            value.role.toLowerCase().includes(action.searchItem.toLowerCase())
+        ) {
+            return value
+        }
+    })
+    return updatedObject(state, { searchedUserList: serchedValue })
 }
 export const openAddUserModal = (state, action) => {
     return updatedObject(state, { addUserEditable: true })
@@ -132,6 +149,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.EDITUSERMODAL: return editUserModal(state, action)
         case actionTypes.CLOSEUSERMODAL: return closeUserModal(state, action)
         case actionTypes.ADDUSER: return addNewUser(state, action)
+        case actionTypes.SEARCHEDUSERLIST: return changeSearchFilter(state, action)
         default: return state
     }
 }

@@ -11,5 +11,6 @@ export {
     getIdFromUser,
     updateUser,
     sendUpdateUser,
-    deleteUser
+    deleteUser,
+    changeSearchFilter
 } from './user'

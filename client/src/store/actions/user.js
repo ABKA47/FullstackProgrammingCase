@@ -61,6 +61,12 @@ export const getIdFromUser = (id) => {
         id: id
     }
 }
+export const changeSearchFilter = (searchItem) => {
+    return {
+        type: actionTypes.SEARCHEDUSERLIST,
+        searchItem: searchItem
+    }
+}
 
 export const fetchAllUsers = () => {
     return dispatch => {

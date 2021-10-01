@@ -34,7 +34,7 @@ router.post('/add-user', (req, res) => {
         role: req.body.role
     })
 
-    user.save(user).then(data => {
+    user.save().then(data => {
         res.status(200).send({
             message: data.message
         })
@@ -50,8 +50,10 @@ router.post('/add-user', (req, res) => {
 router.put('/update-user/:id', (req, res) => {
     const id = req.params.id
 
-    User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    User.findByIdAndUpdate(id, req.body)
         .then(data => {
+            console.log(req.body)
+            console.log(data)
             if (!data) {
                 res.status(404).send({ message: `Cannot Update user with ${id}.Maybe user not found!` })
             } else {
