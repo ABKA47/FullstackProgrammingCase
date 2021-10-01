@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Box from '@material-ui/core/Box/Box';
-import Card from "@material-ui/core/Card";
 import Label from '@material-ui/core/FormLabel/FormLabel'
 import Button from '@material-ui/core/Button/Button';
-import TextBox from '@material-ui/core/TextField/TextField'
+import Input from '../../../components/UI/Input/input';
 import * as actions from '../../../store/actions/index'
 import Notification from '../../../components/UI/Notification/notification';
 
@@ -31,8 +30,7 @@ class UpdateUserModal extends Component {
         this.props.onUpdateUser(updateUserObject)
     }
 
-    formSubmit = (event) => {
-        event.preventDefault()
+    formSubmit = () => {
         const updateUserData = {}
         for (let id in this.props.userUpdate) {
             updateUserData[id] = this.props.userUpdate[id].value
@@ -40,15 +38,6 @@ class UpdateUserModal extends Component {
 
         let sendObject = updateUserData
         this.props.onSendUpdateUser(this.props.idFromUser, sendObject)
-        console.log("response", this.props.response)
-        if (this.props.response === 'OK') {
-            this.props.onSetNotification(true)
-                (<Notification message="User updated successfully" severity='success' />)
-            // window.location.reload()
-        } else {
-            this.props.onSetNotification(false)
-            return (<Notification message="User cannot updated" severity='error' />)
-        }
     }
 
     render() {
@@ -65,17 +54,23 @@ class UpdateUserModal extends Component {
                     <Label aria-atomic>Update User</Label>
                     {userArray.map(user => (
                         <div>
-                            <TextBox
+                            <Input
+                                elementType={user.config.elementType}
+                                elementConfig={user.config.elementConfig}
                                 key={user.id}
                                 color="primary"
                                 variant="outlined"
                                 style={{ width: "100%", marginBottom: '10px' }}
+                                placeholder={user.config.placeHolder}
                                 value={user.config.value}
                                 onChange={(event) => this.inputChanceHandler(event, user.id)}
                             />
                         </div>
                     ))}
-                    <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={(event) => this.formSubmit(event)}>Update User</Button>
+                    <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.formSubmit()}>Update User</Button>
+                    {
+                        this.props.response === 'OK' ? [<Notification message="User updated successfully" severity='success' />, window.location.reload()] : ''
+                    }
                 </Box>
             </div>
         )
@@ -89,7 +84,7 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = dispatch => ({
     onAddNewUser: (newUserObject) => dispatch(actions.addNewUser(newUserObject)),
-    onSendUpdateUser: (newUserObject) => dispatch(actions.sendUpdateUser(newUserObject)),
+    onSendUpdateUser: (id, newUserObject) => dispatch(actions.sendUpdateUser(id, newUserObject)),
     onUpdateUser: (updateUserObject) => dispatch(actions.updateUser(updateUserObject)),
     onSetNotification: (info) => dispatch(actions.setNotification(info))
 })

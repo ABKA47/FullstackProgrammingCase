@@ -79,6 +79,12 @@ export const deleteUserResponse = (response) => {
         response: response
     }
 }
+export const newUserResponse = (response) => {
+    return {
+        type: actionTypes.NEWUSERRESPONSE,
+        response: response
+    }
+}
 
 export const fetchAllUsers = () => {
     return dispatch => {
@@ -89,11 +95,14 @@ export const fetchAllUsers = () => {
 }
 export const sendNewUser = (userObject) => {
     return dispatch => {
-        axios.post("add-user", userObject)
+        axios.post("add-user", userObject).then(response => {
+            dispatch(newUserResponse(response.statusText))
+        })
     }
 }
 export const sendUpdateUser = (userId, userUpdatedObject) => {
     return dispatch => {
+        console.log("updateuser", userUpdatedObject)
         axios.put(`update-user/${userId}`, userUpdatedObject).then(response => {
             console.log(response.statusText)
             dispatch(updateUserResponse(response.statusText))
@@ -103,7 +112,7 @@ export const sendUpdateUser = (userId, userUpdatedObject) => {
 export const deleteUser = (userId) => {
     return dispatch => {
         axios.delete(`delete-user/${userId}`).then(response => {
-            dispatch(deleteUserResponse(response.data))
+            dispatch(deleteUserResponse(response.statusText))
         })
     }
 }

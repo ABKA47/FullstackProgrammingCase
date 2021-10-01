@@ -8,6 +8,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
+import { Link } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withRouter } from "react-router-dom";
 
@@ -107,12 +108,7 @@ const Header = props => {
                         </>
                     ) : (
                         <div className={classes.headerOptions}>
-                            <Button
-                                variant="contained"
-                                onClick={() => handleButtonClick("/")}
-                            >
-                                HOME
-                            </Button>
+                            <Button href="http://localhost:4000/swagger" rel="noopener" target="_blank" variant="contained">SWAGGER</Button>
                             <Button
                                 variant="contained"
                                 onClick={() => handleButtonClick("/users")}

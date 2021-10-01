@@ -3,20 +3,20 @@ import { updatedObject } from '../utility'
 
 const initialState = {
     newUser: {
-        name: { value: '', placeHolder: 'Name' },
-        surname: { value: '', placeHolder: 'SurName' },
-        username: { value: '', placeHolder: 'User Name' },
-        title: { value: '', placeHolder: 'Title' },
-        email: { value: '', placeHolder: 'Email' },
-        role: { value: [{ value: 'Admin', displayValue: 'ADMIN' }, { value: 'User', displayValue: 'USER' }], placeHolder: 'Role' }
+        name: { elementType: 'input', value: '', placeHolder: 'Name' },
+        surname: { elementType: 'input', value: '', placeHolder: 'SurName' },
+        username: { elementType: 'input', value: '', placeHolder: 'User Name' },
+        title: { elementType: 'input', value: '', placeHolder: 'Title' },
+        email: { elementType: 'input', value: '', placeHolder: 'Email' },
+        role: { elementType: 'select', elementConfig: { options: [{ value: 'Admin', displayValue: 'ADMIN' }, { value: 'User', displayValue: 'USER' }], placeHolder: 'Role' }, value: 'Admin' }
     },
     userUpdate: {
-        name: { value: '', placeHolder: 'Name' },
-        surname: { value: '', placeHolder: 'SurName' },
-        username: { value: '', placeHolder: 'User Name' },
-        title: { value: '', placeHolder: 'Title' },
-        email: { value: '', placeHolder: 'Email' },
-        role: { value: [{ value: 'Admin', displayValue: 'ADMIN' }, { value: 'User', displayValue: 'USER' }], placeHolder: 'Role' }
+        name: { elementType: 'input', value: '', placeHolder: 'Name' },
+        surname: { elementType: 'input', value: '', placeHolder: 'SurName' },
+        username: { elementType: 'input', value: '', placeHolder: 'User Name' },
+        title: { elementType: 'input', value: '', placeHolder: 'Title' },
+        email: { elementType: 'input', value: '', placeHolder: 'Email' },
+        role: { elementType: 'select', elementConfig: { options: [{ value: 'Admin', displayValue: 'ADMIN' }, { value: 'User', displayValue: 'USER' }], placeHolder: 'Role' }, value: 'Admin' }
     },
     columns: [
         {
@@ -138,6 +138,9 @@ export const closeUserModal = (state, action) => {
 export const addNewUser = (state, action) => {
     return updatedObject(state, { newUser: action.newUserObject })
 }
+export const newUserResponse = (state, action) => {
+    return updatedObject(state, { response: action.response })
+}
 export const updateUserResponse = (state, action) => {
     return updatedObject(state, { response: action.response })
 }
@@ -158,8 +161,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.CLOSEUSERMODAL: return closeUserModal(state, action)
         case actionTypes.ADDUSER: return addNewUser(state, action)
         case actionTypes.SEARCHEDUSERLIST: return changeSearchFilter(state, action)
-        case actionTypes.UPDATEUSERRESPONSE: return updateUserResponse(state,action)
-        case actionTypes.DELETEUSERRESPONSE: return deleteUserResponse(state,action)
+        case actionTypes.NEWUSERRESPONSE: return newUserResponse(state, action)
+        case actionTypes.UPDATEUSERRESPONSE: return updateUserResponse(state, action)
+        case actionTypes.DELETEUSERRESPONSE: return deleteUserResponse(state, action)
 
         default: return state
     }

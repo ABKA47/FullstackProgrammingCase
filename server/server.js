@@ -26,7 +26,7 @@ const specs = swaggerJsDoc(options);
 
 const app = express()
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use("/swagger", swaggerUI.serve, swaggerUI.setup(specs));
 
 connectDB()
 app.use(cors())

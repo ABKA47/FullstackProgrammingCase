@@ -191,7 +191,7 @@ router.put('/update-user/:id', (req, res) => {
 
     User.findByIdAndUpdate(id, req.body)
         .then(data => {
-            console.log(req.body)
+            console.log(JSON.stringify(req.body))
             console.log(data)
             if (!data) {
                 res.status(404).send({ message: `Cannot Update user with ${id}.Maybe user not found!` })

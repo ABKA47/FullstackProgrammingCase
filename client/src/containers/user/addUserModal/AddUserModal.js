@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Box from '@material-ui/core/Box/Box';
-import Card from "@material-ui/core/Card";
-import Label from '@material-ui/core/FormLabel/FormLabel'
 import Button from '@material-ui/core/Button/Button';
-import TextBox from '@material-ui/core/TextField/TextField'
+import Input from '../../../components/UI/Input/input';
+import Notification from '../../../components/UI/Notification/notification'
 import * as actions from '../../../store/actions/index'
 
 const style = {
@@ -38,8 +37,7 @@ class AddUserModal extends Component {
 
         let sendObject = newUserData
         this.props.onSendNewUser(sendObject)
-        console.log(sendObject)
-        window.location.reload()
+
     }
 
     render() {
@@ -55,24 +53,30 @@ class AddUserModal extends Component {
             <div>
                 <Box sx={style} >
                     {userArray.map(user => (
-                            <TextBox
-                                key={user.id}
-                                color="primary"
-                                variant="outlined"
-                                style={{ width: "100%", marginBottom: '10px' }}
-                                placeholder={user.config.placeHolder}
-                                value={user.config.value}
-                                onChange={(event) => this.inputChanceHandler(event, user.id)}
-                            />
+                        <Input
+                            elementType={user.config.elementType}
+                            elementConfig={user.config.elementConfig}
+                            key={user.id}
+                            color="primary"
+                            variant="outlined"
+                            style={{ width: "100%", marginBottom: '10px' }}
+                            placeholder={user.config.placeHolder}
+                            value={user.config.value}
+                            onChange={(event) => this.inputChanceHandler(event, user.id)}
+                        />
                     ))}
                     <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={(event) => this.formSubmit(event)}>Add User</Button>
+                    {
+                        this.props.response === 'OK' ? [<Notification message="User added successfully" severity='success' />, window.location.reload()] : ''
+                    }
                 </Box>
             </div>
         )
     }
 }
 const mapStateToProps = (state) => ({
-    newUser: state.user.newUser
+    newUser: state.user.newUser,
+    response: state.user.response
 })
 const mapDispatchToProps = dispatch => ({
     onAddNewUser: (newUserObject) => dispatch(actions.addNewUser(newUserObject)),

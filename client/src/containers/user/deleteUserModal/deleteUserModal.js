@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box/Box';
 import Card from "@material-ui/core/Card";
 import Label from '@material-ui/core/FormLabel/FormLabel'
 import Button from '@material-ui/core/Button/Button';
+import Notification from '../../../components/UI/Notification/notification';
 import * as actions from '../../../store/actions/index'
 
 const style = {
@@ -24,23 +25,24 @@ class DeleteUserModal extends Component {
     formSubmit = (event) => {
         event.preventDefault()
         this.props.onDeleteUser(this.props.idFromUser)
-        window.location.reload()
     }
 
     render() {
-        console.log("this.props.user:", this.props.user)
         return (
             <div>
-                <Box sx={style} >                    
+                <Box sx={style} >
                     <Card>
                         <DataTable
                             title="Users"
                             columns={this.props.tableColumns}
                             data={this.props.user}
                         />
-                    </Card>                   
+                    </Card>
                     <Button style={{ margin: '10px' }} color="secondary" variant="contained" onClick={(event) => this.formSubmit(event)}>Delete User</Button>
                 </Box>
+                {
+                    this.props.response === 'OK' ? [<Notification message="User deleted successfully" severity='success' />, window.location.reload()] : ''
+                }
             </div>
         )
     }
@@ -48,7 +50,8 @@ class DeleteUserModal extends Component {
 const mapStateToProps = (state) => ({
     user: state.user.user,
     idFromUser: state.user.idFromUser,
-    tableColumns: state.user.columns
+    tableColumns: state.user.columns,
+    response: state.user.response
 })
 const mapDispatchToProps = dispatch => ({
     onFetchAllUsers: () => dispatch(actions.fetchAllUsers()),

@@ -6,6 +6,8 @@ import Button from "@material-ui/core/Button/Button"
 import TextBox from '@material-ui/core/TextField/TextField'
 import XLSX from 'xlsx'
 import PrintIcon from '@material-ui/icons/Print'
+import Search from '@material-ui/icons/Search'
+import InputAdornment from '@material-ui/core/InputAdornment';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import { connect } from 'react-redux'
@@ -16,11 +18,7 @@ import UpdateUserModal from './updateUserModal/updateUserModal';
 import DeleteUserModal from './deleteUserModal/deleteUserModal'
 import SpecificUserModal from './specificUserModal/specificUserModal'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles'
-import {  pink } from "@material-ui/core/colors";
-
-// CSS
-import "./user.css"
-
+import { pink } from "@material-ui/core/colors";
 
 class User extends Component {
     componentDidMount() {
@@ -57,15 +55,15 @@ class User extends Component {
 
         const defaultTheme = createTheme({
             palette: {
-              secondary: pink
+                secondary: pink
             }
-          });
+        });
 
         const customTheme = createTheme({
             palette: {
-              secondary: pink
+                secondary: pink
             }
-          });
+        });
 
         let userTable = (
             <div className="User">
@@ -78,10 +76,10 @@ class User extends Component {
                             onChange={(event) => this.props.onGetIdFromUser(event.target.value)}
                         />
                         <ThemeProvider theme={defaultTheme}>
-                        <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onGetSpecificUser(this.props.idFromUser)}>Specific User</Button>
-                        <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onOpenUpdateUserModal()}>Update User</Button>
-                        <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onOpenDeleteUserModal()}>Delete User</Button>
-                        <Button style={{ margin: '10px', marginLeft: '50px' }} color="primary" variant="contained" onClick={() => this.props.onOpenAddUserModal()}>Add New User</Button>
+                            <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onGetSpecificUser(this.props.idFromUser)}>Specific User</Button>
+                            <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onOpenUpdateUserModal()}>Update User</Button>
+                            <Button style={{ margin: '10px' }} color="primary" variant="contained" onClick={() => this.props.onOpenDeleteUserModal()}>Delete User</Button>
+                            <Button style={{ margin: '10px', marginLeft: '50px' }} color="primary" variant="contained" onClick={() => this.props.onOpenAddUserModal()}>Add New User</Button>
                         </ThemeProvider>
                     </Card>
 
@@ -92,13 +90,19 @@ class User extends Component {
                         defaultSortFieldId={1}
                         sortIcon={<SortIcon />}
                         pagination
-                        actions={[<TextBox placeholder="Search" onChange={(event) => this.props.onSearchedItemList(event.target.value)} />,
-                        <ThemeProvider theme={defaultTheme}><Button color="secondary" variant="contained" onClick={() => downloadPdf()}>Export PDF</Button></ThemeProvider>,
-                        <ThemeProvider theme={customTheme}><Button color="secondary" variant="contained" onClick={() => downloadExcel()}>Export XLS</Button></ThemeProvider>  ]}
+                        actions={[<TextBox placeholder="Search" onChange={(event) => this.props.onSearchedItemList(event.target.value)} InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search />
+                                </InputAdornment>
+                            ),
+                        }} />,
+                        <ThemeProvider theme={defaultTheme}><Button startIcon={<PrintIcon />} color="secondary" variant="contained" onClick={() => downloadPdf()}>Export PDF</Button></ThemeProvider>,
+                        <ThemeProvider theme={customTheme}><Button endIcon={<PrintIcon />} color="secondary" variant="contained" onClick={() => downloadExcel()}>Export XLS</Button></ThemeProvider>]}
                     />
 
                 </Card>
-            </div>
+            </div >
         )
         return (
             <div>
