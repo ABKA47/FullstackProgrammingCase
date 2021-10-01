@@ -1,5 +1,7 @@
 Express NodeJS, React/Redux, MongoDB
 
+![User List](/img/userlist.PNG)
+
 ## Get Started
 
 ### 1. Prerequisites
@@ -79,7 +81,7 @@ Navigate to http://localhost:4000/swagger for the API documentation.
 
 #### Add User
 
-![Add User](/img/addUSer.PNG)
+![Add User](/img/addUser.PNG)
 
 #### Specific User Details
 
