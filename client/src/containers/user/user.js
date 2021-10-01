@@ -16,7 +16,7 @@ import UpdateUserModal from './updateUserModal/updateUserModal';
 import DeleteUserModal from './deleteUserModal/deleteUserModal'
 import SpecificUserModal from './specificUserModal/specificUserModal'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles'
-import { lightGreen, blue, purple, pink } from "@material-ui/core/colors";
+import {  pink } from "@material-ui/core/colors";
 
 // CSS
 import "./user.css"
