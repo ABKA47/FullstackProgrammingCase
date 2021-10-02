@@ -1,6 +1,6 @@
 const request = require("supertest");
 
-const app = require("./server");
+const app = require("./server.js");
 
 /**
  * Testing get all user endpoint
@@ -8,7 +8,7 @@ const app = require("./server");
 describe("GET /users", () => {
     it("respond with json containing a list of all users", (done) => {
         request(app)
-            .get("/")
+            .get("/users")
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
             .expect(200, done);
@@ -21,7 +21,7 @@ describe("GET /users", () => {
 describe("GET /users/:id", () => {
     it("respond with json containing a single user", (done) => {
         request(app)
-            .get("/61561949e9fd5ec5367fae20")
+            .get("/users/61561949e9fd5ec5367fae20")
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
             .expect(200, done);
@@ -29,11 +29,11 @@ describe("GET /users/:id", () => {
 
     it("respond with json user not found when the user does not exists", (done) => {
         request(app)
-            .get("/61561949e9fd5ec5367fae20")
+            .get("/users/61561949e9fd5ec5367fa435")
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
             .expect(404)
-            .expect('"user not found"')
+            .expect('{"message":"Not found user with id=61561949e9fd5ec5367fa435"}')
             .end((err) => {
                 if (err) return done(err);
                 done();
@@ -45,7 +45,7 @@ describe("GET /users/:id", () => {
  * Testing POST users endpoint
  */
 describe("POST /add-user", () => {
-    it("respond with 201 created", (done) => {
+    it("respond with 200 created", (done) => {
         const data = {
             name: "Abdullah",
             surname: "KARACAOĞLU",
@@ -55,28 +55,49 @@ describe("POST /add-user", () => {
             role: "Admin"
         };
         request(app)
-            .post("/")
+            .post("/add-user")
             .send(data)
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
-            .expect(201)
+            .expect(200)
             .end((err) => {
                 if (err) return done(err);
                 done();
             });
     });
 
-    it("respond with 400 on bad request", (done) => {
+});
+
+describe("PUT /update-user/:id", () => {
+    it("respond with 200 created", (done) => {
         const data = {
-            // no data
+            name: "Abdullah",
+            surname: "KARACAOĞLU",
+            username: "ABKA47",
+            title: "Junior FullStack Java Software Engineer",
+            email: "abdullahkaracaoglu7@gmail.com",
+            role: "Admin"
         };
         request(app)
-            .post("/users")
+            .put("/update-user/61561949e9fd5ec5367fae20")            
             .send(data)
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
-            .expect(400)
-            .expect('"user not created"')
+            .expect(200)
+            .end((err) => {
+                if (err) return done(err);
+                done();
+            });
+    });
+});
+
+describe("DELETE /delete-user/:id", () => {
+    it("respond with 200 created", (done) => {      
+        request(app)
+            .delete("/delete-user/61561949e9fd5ec5367fae20")             
+            .set("Accept", "application/json")
+            .expect("Content-Type", /json/)
+            .expect(200)
             .end((err) => {
                 if (err) return done(err);
                 done();
