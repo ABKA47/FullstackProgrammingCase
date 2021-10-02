@@ -30,7 +30,15 @@ On the command prompt run the following commands:
  $ cd client
  $ npm start
 ```
-### 3. Project architecture
+
+### 3. Testing
+``` 
+ $ cd server
+ $ npm test
+```
+![Testing](/img/testing.PNG)
+
+### 4. Project architecture
 
 For a detailed guide through the project architecture and more information on configuring and deploying the system.
 
@@ -69,7 +77,7 @@ For a detailed guide through the project architecture and more information on co
     └───routes
 ```
 
-### 4. Usage
+### 5. Usage
 
 URL : http://localhost:3000/
 
